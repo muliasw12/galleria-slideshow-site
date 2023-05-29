@@ -1,23 +1,51 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory, useRoute } from 'vue-router'
+import HomeView from '../views/HomeView.vue';
+import ArtistDetailsList from "../views/ArtistDetailsList.vue";
+import ArtistDetails from '../views/ArtistDetails.vue';
+import data from '../assets/shared/data.json';
+
+const routes = [
+  {
+    path: "/",
+    name: "Home",
+    component: HomeView,
+  },
+  {
+    path: "/artists/:id",
+    name: "ArtistDetailsList",
+    component: ArtistDetailsList,
+  },
+  {
+    path: "/artist/:id",
+    name: "ArtistDetails",
+    component: ArtistDetails,
+    props: (route) => ({ ...route.params, id: parseInt(route.params.id) }),
+    beforeEnter(to, from) {
+      const exists = data.paintings.find(
+        (painting) => painting.id === parseInt(to.params.id)
+      );
+      if (!exists)
+        return (
+          {
+            name: "NotFound",
+            // allows keeping the URL while rendering a different page
+            params: { pathMatch: to.path.split("/").slice(1)},
+            query: to.query,
+            hash: to.hash,
+          },
+          {
+            path: "/:pathMatch(.*)*",
+            name: "NotFound",
+            component: () => import ("../views/NotFound.vue")
+          }
+        );
+    },
+  },
+];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
-  ]
-})
+  history: createWebHistory(),
+  routes,
+});
 
-export default router
+export default router;
