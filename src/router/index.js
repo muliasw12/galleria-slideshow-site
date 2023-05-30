@@ -7,7 +7,7 @@ import data from '../assets/shared/data.json';
 const routes = [
   {
     path: "/",
-    name: "Home",
+    name: "HomeView",
     component: HomeView,
   },
   {

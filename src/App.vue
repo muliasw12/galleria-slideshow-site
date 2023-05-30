@@ -1,85 +1,136 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <BaseHeader
+    @reset-start-show="reset"
+    @start-slide-show="toggleSlideShow"
+    :startShow="startShow"
+  />
+  <router-view :startShow="startShow"></router-view>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<script>
+import BaseHeader from './components/BaseHeader.vue';
+
+export default {
+  name: "App",
+  components: {
+    BaseHeader,
+  },
+  data() {
+    return {
+      startShow: false, 
+    }
+  },
+  methods: {
+    toggleSlideShow() {
+      this.startShow = !this.startShow;
+
+      if (this.$route.path === "/") {
+        this.$route.push({ name: "ArtistDetails", params: { id: 1} }); 
+      }
+    },
+    reset() {
+      this.startShow = false;
+    },
+  },
+};
+</script>
+
+<style lang="scss">
+@use "sass:math";
+@function rem($pixels, $context: 16) {
+  @return (math.div($pixels, $context)) * 1rem;
 }
 
-.logo {
+:root {
+  --black: hsl(0, 0%, 0%);
+  --darkGray: hsl(0, 0%, 3%);
+  --lightGray: hsl(0, 0%, 90%);
+  --gray: hsl(0, 0%, 95%);
+  --white: hsl(0, 0%, 100%);
+
+  --baskerville: "Libre Baskerville", serif;
+  font-display: swap;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+html {
+  font-size: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--baskerville);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+}
+
+a,
+a:visited,
+a:active {
+  text-decoration: none;
+}
+
+.main,
+.hero {
+  margin: 0 auto;
+  padding: 0 rem(24);
+}
+img {
   display: block;
-  margin: 0 auto 2rem;
+  max-width: 100%;
+  height: auto;
 }
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+.wrapper,
+header,
+.pagination {
+  max-width: rem(1360);
+  margin-left: auto;
+  margin-right: auto;
 }
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.btn,
+.controls > div,
+button {
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+@media (min-width: rem(768)) {
+  .main,
+  .hero {
+    padding: 0 rem(40);
   }
-
-  .logo {
-    margin: 0 2rem 0 0;
+}
+@media (min-width: rem(1440)) {
+  .main,
+  .hero {
+    margin: 0;
+    padding: 0;
   }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
+

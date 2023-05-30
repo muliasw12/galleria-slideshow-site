@@ -117,7 +117,7 @@ export default {
       return data.paintings.find((painting) => painting.id === this.id);
     },
     fullWidth() {
-      return `width:${this.width * 6.666667}%`;
+      return `width:${this.width * 6.66666667}%`;
     },
   },
   methods: {

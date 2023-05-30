@@ -1,9 +1,25 @@
-<script setup>
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
-
 <template>
-  <main>
-    <TheWelcome />
+  <main class="main">
+    <ArtistCards :paintings="paintings" />
   </main>
 </template>
+
+<script>
+import ArtistCards from '../components/ArtistCards.vue';
+import data from '../assets/shared/data.json';
+
+export default {
+  name: "HomeView",
+  components: {
+    ArtistCards, 
+  },
+  props: {
+    startShow: Boolean, 
+  },
+  data() {
+    return {
+      paintings: data.paintings,
+    };
+  },
+};
+</script>
