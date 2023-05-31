@@ -5,16 +5,16 @@
 </template>
 
 <script>
-import ArtistCards from '../components/ArtistCards.vue';
-import data from '../assets/shared/data.json';
+import ArtistCards from "../components/ArtistCards.vue";
+import data from "../assets/shared/data.json";
 
 export default {
-  name: "HomeView",
+  name: "Home",
   components: {
-    ArtistCards, 
+    ArtistCards,
   },
   props: {
-    startShow: Boolean, 
+    startShow: Boolean,
   },
   data() {
     return {

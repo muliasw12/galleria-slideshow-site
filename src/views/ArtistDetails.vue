@@ -1,65 +1,64 @@
 <template>
   <div class="wrapper" v-if="painting">
-    <!--hero-->
+    <!-- hero -->
     <div class="hero">
-      <!--hero image-->
+      <!-- hero image -->
       <picture>
-        <source 
+        <source
           :srcset="painting.images.hero.large"
           media="(min-width: 768px)"
         />
-        <img :src="painting.images.hero.small" alt=""/>
+        <img :src="painting.images.hero.small" alt="" />
       </picture>
-      <!--hero header group-->
+      <!-- hero header group -->
       <div class="heading-group">
         <h2>{{ painting.name }}</h2>
         <h3>{{ painting.artist.name }}</h3>
 
-        <!--hero artist image-->
+        <!-- hero artist image -->
         <div class="artist-image">
-          <img :src="painting.artist.image" alt=""/>
+          <img :src="painting.artist.image" alt="" />
         </div>
       </div>
-      <!--hero button-->
-      <BaseButton 
+      <!-- hero button -->
+      <BaseButton
         @click="$refs.modalName.openModal()"
         class="btn btn--hero"
         txt="View Image"
       />
     </div>
 
-    <!--body-->
+    <!-- body -->
     <main class="main">
-      <!--body year-->
+      <!-- body year -->
       <h2 class="year">{{ painting.year }}</h2>
-      <!--body copy-->
+      <!-- body copy -->
       <p>{{ painting.description }}</p>
-      <!--body-link -->
+      <!-- body link -->
       <a class="btn btn--link" :href="painting.source" target="_blank">
-        Go To Source 
+        Go To Source
       </a>
     </main>
   </div>
 
   <footer class="footer" v-if="painting">
-    <!--progress bar-->
+    <!-- progress bar -->
     <div class="progress" :style="fullWidth"></div>
-    <!--pagination-->
+    <!-- pagination -->
     <div class="pagination">
-      <!--pagination header group-->
+      <!-- pagination header group -->
       <div class="heading-group">
         <h2>{{ painting.name }}</h2>
         <h3>{{ painting.artist.name }}</h3>
       </div>
-      <!--pagination controls-->
+      <!-- pagination controls -->
       <div class="controls">
         <div class="prev">
           <a
             :class="{ disabled: $route.params.id == 1 }"
             @click.prevent="prev()"
           >
-            <img src="../assets/shared/icon-back-button.svg" alt=""/>
-
+            <img src="../assets/shared/icon-back-button.svg" alt="" />
           </a>
         </div>
         <div class="next">
@@ -67,8 +66,7 @@
             :class="{ disabled: $route.params.id == 15 }"
             @click.prevent="next()"
           >
-            <img src="../assets/shared/icon-next-button.svg" alt=""/>
-
+            <img src="../assets/shared/icon-next-button.svg" alt="" />
           </a>
         </div>
       </div>
@@ -83,9 +81,9 @@
 </template>
 
 <script>
-import data from '../assets/shared/data.json';
+import data from "../assets/shared/data.json";
 import BaseButton from "../components/BaseButton.vue";
-import Modal from '../components/Modal.vue';
+import Modal from "../components/Modal.vue";
 import Pagination from "../components/Pagination.vue";
 
 export default {
@@ -93,7 +91,7 @@ export default {
   components: {
     BaseButton,
     Modal,
-    Pagination, 
+    Pagination,
   },
   props: {
     id: {
@@ -104,7 +102,7 @@ export default {
   },
   data() {
     return {
-      width: this.id, 
+      width: this.id,
     };
   },
   watch: {
@@ -134,7 +132,7 @@ export default {
       if (this.id < 15) {
         this.$router.push({
           name: "ArtistDetails",
-          params: { id: this.id + 1},
+          params: { id: this.id + 1 },
         });
         this.width = this.id + 1;
       }
@@ -149,12 +147,12 @@ export default {
     },
   },
   mounted() {
-    this.startSlideShow(); 
+    this.startSlideShow();
   },
 };
 </script>
 
-<style lang="scss" scpoed>
+<style lang="scss" scoped>
 @use "sass:math";
 @function rem($pixels, $context: 16) {
   @return (math.div($pixels, $context)) * 1rem;
@@ -178,7 +176,6 @@ export default {
   h2 {
     font-size: rem(24);
   }
-
   h3 {
     font-size: rem(15);
     color: #7d7d7d;
@@ -209,7 +206,7 @@ export default {
     width: rem(12);
     background-image: url("../assets/shared/icon-view-image.svg");
     background-repeat: no-repeat;
-    background-size: contain; 
+    background-size: contain;
   }
 
   &:hover {
@@ -224,11 +221,9 @@ export default {
   margin-block-end: rem(-50);
   top: rem(10);
 }
-
 .artist-image img {
   max-width: rem(64);
 }
-
 .year {
   font-size: rem(100);
   text-align: right;
@@ -241,7 +236,6 @@ p {
   font-size: rem(14);
   line-height: rem(28);
   color: #7d7d7d;
-
 }
 
 .btn--link {
@@ -277,7 +271,7 @@ p {
   position: absolute;
   left: 0;
   right: 0;
-  z-index: -1; 
+  z-index: -1;
 }
 
 .pagination {
@@ -286,7 +280,7 @@ p {
   flex-wrap: wrap;
   width: 100%;
   justify-content: space-between;
-  align-items: center; 
+  align-items: center;
 
   .heading-group {
     h2 {
@@ -325,22 +319,24 @@ p {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center; 
+    align-items: center;
   }
   .hero {
     flex: 0 0 100%;
     max-width: rem(768);
-    display: flex;
-    margin-block-end: rem(55);
   }
   .main {
     flex: 0 0 100%;
     max-width: rem(552);
   }
+  .hero {
+    display: flex;
+    margin-block-end: rem(55);
+  }
   .hero .heading-group {
     flex: 0 0 100%;
     width: 100%;
-    max-width: 100%;
+    max-width: rem(445);
     margin-top: 0;
     position: absolute;
     right: rem(40);
@@ -367,7 +363,6 @@ p {
   }
   .artist-image img {
     max-width: 100%;
-
   }
   .year {
     text-align: left;
@@ -381,7 +376,6 @@ p {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    
   }
   .btn--link {
     margin-block: rem(50);
@@ -410,9 +404,7 @@ p {
       margin-left: rem(40);
     }
   }
-
 }
-
 @media (min-width: rem(1440)) {
   .main {
     max-width: rem(476);

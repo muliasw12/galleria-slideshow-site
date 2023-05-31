@@ -1,14 +1,14 @@
-import { createRouter, createWebHistory, useRoute } from 'vue-router'
-import HomeView from '../views/HomeView.vue';
+import { createRouter, createWebHistory, useRoute } from "vue-router";
+import Home from "../views/Home.vue";
 import ArtistDetailsList from "../views/ArtistDetailsList.vue";
-import ArtistDetails from '../views/ArtistDetails.vue';
-import data from '../assets/shared/data.json';
+import ArtistDetails from "../views/ArtistDetails.vue";
+import data from "../assets/shared/data.json";
 
 const routes = [
   {
     path: "/",
-    name: "HomeView",
-    component: HomeView,
+    name: "Home",
+    component: Home,
   },
   {
     path: "/artists/:id",
@@ -29,14 +29,14 @@ const routes = [
           {
             name: "NotFound",
             // allows keeping the URL while rendering a different page
-            params: { pathMatch: to.path.split("/").slice(1)},
+            params: { pathMatch: to.path.split("/").slice(1) },
             query: to.query,
             hash: to.hash,
           },
           {
             path: "/:pathMatch(.*)*",
             name: "NotFound",
-            component: () => import ("../views/NotFound.vue")
+            component: () => import("../views/NotFound.vue"),
           }
         );
     },

@@ -1,27 +1,27 @@
 <template>
     <button @click="$emit('btn-click')">{{ txt }}</button>
-</template>
-
-<script>
-export default {
+  </template>
+  
+  <script>
+  export default {
     name: "BaseButton",
     props: {
-        txt: String,
+      txt: String,
     },
-};
-</script>
-
-<style lang="scss" scope>
-@use "sass:math";
-@function rem($pixels, $context: 16) {
+  };
+  </script>
+  
+  <style lang="scss" scope>
+  @use "sass:math";
+  @function rem($pixels, $context: 16) {
     @return (math.div($pixels, $context)) * 1rem;
-}
-:root {
+  }
+  :root {
     --baskerville: "Libre Baskerville", serif;
     font-display: swap;
-}
-
-button {
+  }
+  
+  button {
     background: transparent;
     border: 0;
     font-family: var(--baskerville);
@@ -32,9 +32,9 @@ button {
     text-transform: uppercase;
     cursor: pointer;
     letter-spacing: rem(2);
-
+  
     &:hover {
-        color: #000;
+      color: #000;
     }
-}
-</style>
+  }
+  </style>

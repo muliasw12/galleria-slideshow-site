@@ -1,142 +1,142 @@
 <template>
-    <div
-        v-for="painting in displayedPaintings"
-        :key="painting.id"
-        :paintings="paintings"
-    >
-        <div class="wrapper">
-            <!--hero-->
-            <div class="hero">
-                <!--hero image-->
-                <picture>
-                    <source
-                        :srcset="painting.images.hero.large"
-                        media="(min-width: 768px)"
-                    />
-                    <img :src="painting.images.hero.small" alt=""/>
-                </picture>
-                <!--hero header group-->
-                <div class="heading-group">
-                    <h2>{{ painting.name }}</h2>
-                    <h3>{{ painting.artist.name }}</h3>
+  <div
+    v-for="painting in displayedPaintings"
+    :key="painting.id"
+    :paintings="paintings"
+  >
+    <div class="wrapper">
+      <!-- hero -->
+      <div class="hero">
+        <!-- hero image -->
+        <picture>
+          <source
+            :srcset="painting.images.hero.large"
+            media="(min-width: 768px)"
+          />
+          <img :src="painting.images.hero.small" alt="" />
+        </picture>
+        <!-- hero header group -->
+        <div class="heading-group">
+          <h2>{{ painting.name }}</h2>
+          <h3>{{ painting.artist.name }}</h3>
 
-                    <!--hero artists image-->
-                    <div class="artist-image">
-                        <img :src="painting.artist.image" alt="" />
-                    </div>
-                </div>
-                <!--hero button-->
-                <BaseButton
-                    @click="$refs.modalName.openModal()"
-                    class="btn btn--hero"
-                    txt="View Image"
-                />
-            </div>
-
-            <!--body-->
-            <main class="main">
-                <!--body year-->
-                <h2 class="year">{{ painting.year }}</h2>
-                <!--body copy-->
-                <p>{{ painting.description }}</p>
-                <!--body link-->
-                <a class="btn btn--link" :href="painting.source" target="_blank">
-                    Go To Source 
-                </a>
-            </main>
+          <!-- hero artist image -->
+          <div class="artist-image">
+            <img :src="painting.artist.image" alt="" />
+          </div>
         </div>
-        <footer class="footer" v-if="painting">
-            <!--progress bar-->
-            <div class="progress"></div>
-            <!--pagination-->
-            <div class="pagination">
-                <!--pagination header group-->
-                <div class="heading-group">
-                    <h2>{{ painting.name }}</h2>
-                    <h3>{{ painting.artist.name }}</h3>
-                </div>
-                <!--pagination controls-->
-                <div class="controls">
-                    <div class="prev disabled">
-                        <img src="../assets/shared/icon-back-button.svg" alt=""/>
-                    </div>
-                    <div class="next">
-                        <img src="../assets/shared/icon-next-button.svg" alt=""/>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <!-- hero button -->
+        <BaseButton
+          @click="$refs.modalName.openModal()"
+          class="btn btn--hero"
+          txt="View Image"
+        />
+      </div>
 
-        <modal ref="modalName">
-            <template v-slot:body>
-                <img :src="painting.images.gallery" alt="" />
-            </template>
-        </modal>
+      <!-- body -->
+      <main class="main">
+        <!-- body year -->
+        <h2 class="year">{{ painting.year }}</h2>
+        <!-- body copy -->
+        <p>{{ painting.description }}</p>
+        <!-- body link -->
+        <a class="btn btn--link" :href="painting.source" target="_blank">
+          Go To Source
+        </a>
+      </main>
     </div>
-    <button type="button" class="page-link" v-if="page != 1" @click="page--">
-        Previous 
-    </button>
-    <button
-        type="button"
-        @click="page++"
-        v-if="page < pages.length"
-        class="page-link"
-    >
-        Next 
-    </button>
-    {{ $route.params.id }}
+    <footer class="footer" v-if="painting">
+      <!-- progress bar -->
+      <div class="progress"></div>
+      <!-- pagination -->
+      <div class="pagination">
+        <!-- pagination header group -->
+        <div class="heading-group">
+          <h2>{{ painting.name }}</h2>
+          <h3>{{ painting.artist.name }}</h3>
+        </div>
+        <!-- pagination controls -->
+        <div class="controls">
+          <div class="prev disabled">
+            <img src="../assets/shared/icon-back-button.svg" alt="" />
+          </div>
+          <div class="next">
+            <img src="../assets/shared/icon-next-button.svg" alt="" />
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <modal ref="modalName">
+      <template v-slot:body>
+        <img :src="painting.images.gallery" alt="" />
+      </template>
+    </modal>
+  </div>
+  <button type="button" class="page-link" v-if="page != 1" @click="page--">
+    Previous
+  </button>
+  <button
+    type="button"
+    @click="page++"
+    v-if="page < pages.length"
+    class="page-link"
+  >
+    Next
+  </button>
+  {{ $route.params.id }}
 </template>
 
 <script>
-import data from '../assets/shared/data.json';
-import BaseButton from '../components/BaseButton.vue';
-import Modal from '../components/Modal.vue';
+import data from "../assets/shared/data.json";
+import BaseButton from "../components/BaseButton.vue";
+import Modal from "../components/Modal.vue";
 
 export default {
-    name: "ArtistDetailsList",
-    components: {
-        BaseButton,
-        Modal,
+  name: "ArtistDetailsList",
+  components: {
+    BaseButton,
+    Modal,
+  },
+  data() {
+    return {
+      paintings: [],
+      page: this.$route.params.id,
+      perPage: 1,
+      pages: [],
+    };
+  },
+  methods: {
+    getPaintings() {
+      this.paintings = data.paintings;
     },
-    data() {
-        return {
-            paintings: [],
-            page: this.$route.params.id,
-            perPage: 1,
-            pages: [],
-        };
+    setPages() {
+      let numberOfPages = Math.ceil(this.paintings.length / this.perPage);
+      for (let index = 1; index <= numberOfPages; index++) {
+        this.pages.push(index);
+      }
     },
-    methods: {
-        getPaintings() {
-            this.paintings = data.paintings;
-        },
-        setPages() {
-            let numberOfPages = Math.ceil(this.paintings.length / this.perPage);
-            for (let index = 1; index <= numberOfPages; index++) {
-                this.pages.push(index);
-            }
-        },
-        paginate(paintings) {
-            let page = this.page;
-            let perPage = this.perPage;
-            let from = page * perPage - perPage;
-            let to = page * perPage;
-            return paintings.slice(from, to);
-        },
+    paginate(paintings) {
+      let page = this.page;
+      let perPage = this.perPage;
+      let from = page * perPage - perPage;
+      let to = page * perPage;
+      return paintings.slice(from, to);
     },
-    computed: {
-        displayedPaintings() {
-            return this.paginate(this.paintings); 
-        },
+  },
+  computed: {
+    displayedPaintings() {
+      return this.paginate(this.paintings);
     },
-    watch: {
-        paintings() {
-            this.setPages();
-        },
+  },
+  watch: {
+    paintings() {
+      this.setPages();
     },
-    created() {
-        this.getPaintings();
-    },
+  },
+  created() {
+    this.getPaintings();
+  },
 };
 </script>
 

@@ -6,9 +6,8 @@
   />
   <router-view :startShow="startShow"></router-view>
 </template>
-
 <script>
-import BaseHeader from './components/BaseHeader.vue';
+import BaseHeader from "./components/BaseHeader.vue";
 
 export default {
   name: "App",
@@ -17,15 +16,15 @@ export default {
   },
   data() {
     return {
-      startShow: false, 
-    }
+      startShow: false,
+    };
   },
   methods: {
     toggleSlideShow() {
       this.startShow = !this.startShow;
 
       if (this.$route.path === "/") {
-        this.$route.push({ name: "ArtistDetails", params: { id: 1} }); 
+        this.$router.push({ name: "ArtistDetails", params: { id: 1 } });
       }
     },
     reset() {
@@ -133,4 +132,3 @@ button {
   opacity: 0;
 }
 </style>
-
